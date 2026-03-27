@@ -1,0 +1,252 @@
+/* ================================================================
+   letter.css — Read-only letter view page
+   ================================================================ */
+
+.letter-view-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.letter-view-content {
+  flex: 1;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+}
+
+/* ---- Top bar: back + delete -------------------------------------- */
+
+.letter-view-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xl);
+}
+
+.letter-view-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.back-btn {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 230, 200, 0.35);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+}
+.back-btn:hover {
+  color: var(--ink-parchment);
+}
+.back-btn::before {
+  content: '←';
+  font-size: 14px;
+}
+
+.download-btn {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(201, 151, 74, 0.55);
+  background: none;
+  border: 1px solid rgba(201, 151, 74, 0.2);
+  cursor: pointer;
+  padding: 8px 14px;
+  transition: color var(--duration-fast), border-color var(--duration-fast),
+              background var(--duration-fast);
+}
+.download-btn:hover {
+  color: rgba(201, 151, 74, 0.9);
+  border-color: rgba(201, 151, 74, 0.45);
+  background: rgba(201, 151, 74, 0.06);
+}
+.download-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.export-error {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #c47070;
+  font-style: italic;
+  margin-bottom: var(--space-md);
+}
+
+.delete-btn {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(180, 80, 80, 0.45);
+  background: none;
+  border: 1px solid rgba(180, 80, 80, 0.18);
+  cursor: pointer;
+  padding: 8px 14px;
+  transition: color var(--duration-fast), border-color var(--duration-fast),
+              background var(--duration-fast);
+}
+.delete-btn:hover {
+  color: rgba(220, 100, 100, 0.9);
+  border-color: rgba(220, 100, 100, 0.4);
+  background: rgba(220, 100, 100, 0.06);
+}
+
+/* ---- Paper body -------------------------------------------------- */
+
+.letter-paper {
+  background-color: var(--ink-parchment);
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  background-position: center;
+  color: var(--ink-sepia);
+  font-family: var(--font-cursive);
+  font-size: 19px;
+  line-height: 2;
+  padding: 48px 52px;
+  min-height: var(--paper-height);
+  box-shadow: var(--shadow-paper);
+  word-break: break-word;
+  position: relative;
+}
+
+/* ---- Elements inside the paper (mirroring the PDF layout) ---- */
+
+.letter-paper-date {
+  font-family: var(--font-cursive);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(44, 24, 16, 0.5);
+  text-align: right;
+  margin-bottom: 28px;
+}
+
+.letter-paper-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 300;
+  color: var(--ink-sepia);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+
+.letter-paper-divider {
+  border: none;
+  border-top: 1px solid rgba(44, 26, 14, 0.15);
+  margin-bottom: 24px;
+}
+
+.letter-paper-body {
+  white-space: pre-wrap;
+}
+
+/* ---- Delete confirmation modal ----------------------------------- */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(6px);
+  animation: fadeIn var(--duration-fast) var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.confirm-modal {
+  background: var(--ink-mahogany);
+  border: 1px solid rgba(245, 230, 200, 0.1);
+  padding: var(--space-xl) var(--space-xl);
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp var(--duration-mid) var(--ease-out);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.confirm-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink-parchment);
+  margin-bottom: var(--space-sm);
+}
+
+.confirm-sub {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: rgba(245, 230, 200, 0.45);
+  font-style: italic;
+  line-height: 1.65;
+  margin-bottom: var(--space-xl);
+}
+
+.confirm-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.confirm-cancel {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 230, 200, 0.45);
+  background: none;
+  border: 1px solid rgba(245, 230, 200, 0.15);
+  cursor: pointer;
+  padding: 10px 22px;
+  transition: color var(--duration-fast), border-color var(--duration-fast);
+}
+.confirm-cancel:hover {
+  color: var(--ink-parchment);
+  border-color: rgba(245, 230, 200, 0.35);
+}
+
+.confirm-delete {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(220, 100, 100, 0.85);
+  background: rgba(220, 100, 100, 0.08);
+  border: 1px solid rgba(220, 100, 100, 0.3);
+  cursor: pointer;
+  padding: 10px 22px;
+  transition: background var(--duration-fast), border-color var(--duration-fast),
+              color var(--duration-fast);
+}
+.confirm-delete:hover {
+  background: rgba(220, 100, 100, 0.16);
+  border-color: rgba(220, 100, 100, 0.55);
+  color: rgba(220, 100, 100, 1);
+}
+.confirm-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

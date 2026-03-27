@@ -1,0 +1,344 @@
+/* ================================================================
+   reflection.css — Intent Reflection post-writing screen.
+   Full-screen transitional screen shown after sealing, before
+   the letter is truly committed.
+   ================================================================ */
+
+.reflection-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  animation: reflectionFadeIn 600ms var(--ease-out) forwards;
+}
+
+@keyframes reflectionFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---- Content card ----------------------------------------------- */
+
+.reflection-card {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* ---- Eyebrow label --------------------------------------------- */
+
+.reflection-eyebrow {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(201, 151, 74, 0.5);
+}
+
+/* ---- Intent block (coach summary display) ---------------------- */
+
+.reflection-intent-block {
+  border-left: 2px solid rgba(201, 151, 74, 0.2);
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reflection-intent-label {
+  font-family: var(--font-mechanical);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(201, 151, 74, 0.45);
+}
+
+.reflection-intent-text {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgba(245, 230, 200, 0.6);
+}
+
+/* ---- Self-assessment question ---------------------------------- */
+
+.reflection-question {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-parchment);
+}
+
+/* ---- Feeling options ------------------------------------------- */
+
+.reflection-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.reflection-option {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(245, 230, 200, 0.55);
+  background: transparent;
+  border: 1px solid rgba(245, 230, 200, 0.1);
+  padding: 13px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease;
+}
+
+.reflection-option:hover {
+  color: var(--ink-parchment);
+  border-color: rgba(245, 230, 200, 0.25);
+}
+
+/* ---- Reflection text (typewriter reveal) ----------------------- */
+
+.reflection-text-wrap {
+  min-height: 100px;
+}
+
+.reflection-text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.65;
+  color: var(--ink-parchment);
+  letter-spacing: 0.01em;
+}
+
+/* Inline blinking cursor during reveal */
+.reflection-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  background: var(--ink-gold);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: cursorBlink 0.9s step-end infinite;
+}
+
+.reflection-cursor--hidden {
+  display: none;
+}
+
+/* ---- Action buttons -------------------------------------------- */
+
+.reflection-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+.reflection-actions--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Primary: seal / seal-as-is */
+.reflection-btn-seal {
+  font-family: var(--font-mechanical);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-gold);
+  background: transparent;
+  border: 1px solid rgba(201, 151, 74, 0.5);
+  padding: 14px 40px;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+
+.reflection-btn-seal:hover:not(:disabled) {
+  border-color: var(--ink-gold);
+  background: rgba(201, 151, 74, 0.07);
+}
+
+.reflection-btn-seal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Secondary row: go back + seal as is (for drifted state) */
+.reflection-secondary-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.reflection-btn-edit {
+  font-family: var(--font-mechanical);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 230, 200, 0.6);
+  background: transparent;
+  border: 1px solid rgba(245, 230, 200, 0.2);
+  padding: 13px 32px;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease,
+              color var(--duration-fast) ease;
+}
+
+.reflection-btn-edit:hover {
+  border-color: rgba(245, 230, 200, 0.4);
+  color: var(--ink-parchment);
+}
+
+.reflection-btn-seal-as-is {
+  font-family: var(--font-mechanical);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-gold);
+  background: transparent;
+  border: 1px solid rgba(201, 151, 74, 0.4);
+  padding: 13px 32px;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+
+.reflection-btn-seal-as-is:hover:not(:disabled) {
+  border-color: var(--ink-gold);
+  background: rgba(201, 151, 74, 0.06);
+}
+
+.reflection-btn-seal-as-is:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Skip / bypass link */
+.reflection-btn-skip {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(245, 230, 200, 0.22);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast) ease;
+  padding: 0;
+  margin-top: var(--space-sm);
+}
+
+.reflection-btn-skip:hover {
+  color: rgba(245, 230, 200, 0.4);
+}
+
+/* ---- Loading state --------------------------------------------- */
+
+.reflection-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(245, 230, 200, 0.3);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 15px;
+  min-height: 100px;
+}
+
+.reflection-loading-dots span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.reflection-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.reflection-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ---- Error state ----------------------------------------------- */
+
+.reflection-error {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: rgba(196, 112, 112, 0.85);
+  font-style: italic;
+}
+
+/* ---- Sealed confirmation card ---------------------------------- */
+
+.reflection-sealed-card {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  animation: reflectionFadeIn 700ms var(--ease-out) forwards;
+}
+
+.reflection-sealed-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 52px;
+  color: var(--ink-parchment);
+  margin: 0;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.reflection-sealed-message {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(245, 230, 200, 0.72);
+  margin: 0;
+}
+
+.reflection-sealed-continue {
+  margin-top: var(--space-sm);
+  align-self: flex-start;
+}
+
+/* ---- Saving overlay -------------------------------------------- */
+
+.reflection-saving-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 11, 9, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  animation: reflectionFadeIn var(--duration-mid) ease forwards;
+}
+
+.reflection-saving-text {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 32px;
+  color: var(--ink-parchment);
+  letter-spacing: 0.03em;
+  opacity: 0;
+  animation: savingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes savingPulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1;   }
+}

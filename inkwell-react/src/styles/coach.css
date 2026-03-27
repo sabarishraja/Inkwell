@@ -1,0 +1,299 @@
+/* ================================================================
+   coach.css — Letter Coach pre-writing ritual
+   Full-screen guided Q&A that happens before composing.
+   ================================================================ */
+
+.coach-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  position: relative;
+}
+
+/* ---- Step indicator dots ---------------------------------------- */
+
+.coach-steps {
+  display: flex;
+  gap: 10px;
+  margin-bottom: var(--space-xl);
+  align-items: center;
+}
+
+.coach-step-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(245, 230, 200, 0.15);
+  transition: background var(--duration-mid) var(--ease-out),
+              transform var(--duration-mid) var(--ease-out);
+}
+
+.coach-step-dot--active {
+  background: var(--ink-gold);
+  transform: scale(1.4);
+}
+
+.coach-step-dot--done {
+  background: rgba(201, 151, 74, 0.4);
+}
+
+/* ---- Main content card ----------------------------------------- */
+
+.coach-card {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* ---- Question display ------------------------------------------ */
+
+.coach-question-wrap {
+  min-height: 80px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.coach-question {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 28px;
+  line-height: 1.45;
+  color: var(--ink-parchment);
+  letter-spacing: 0.01em;
+}
+
+/* Blinking cursor at end of typewriter reveal */
+.coach-question-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--ink-gold);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.9s step-end infinite;
+}
+
+.coach-question-cursor--hidden {
+  display: none;
+}
+
+/* ---- Answer textarea ------------------------------------------- */
+
+.coach-answer-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+.coach-answer-wrap--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.coach-answer {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(245, 230, 200, 0.15);
+  color: var(--ink-parchment);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+  padding: var(--space-sm) 0;
+  resize: none;
+  min-height: 80px;
+  outline: none;
+  caret-color: var(--ink-gold);
+  transition: border-bottom-color var(--duration-mid) ease;
+}
+
+.coach-answer::placeholder {
+  color: rgba(245, 230, 200, 0.18);
+  font-style: italic;
+}
+
+.coach-answer:focus {
+  border-bottom-color: rgba(245, 230, 200, 0.3);
+}
+
+/* ---- Actions row ----------------------------------------------- */
+
+.coach-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+  transition-delay: 100ms;
+}
+
+.coach-actions--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.coach-btn-continue {
+  font-family: var(--font-mechanical);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-parchment);
+  background: transparent;
+  border: 1px solid rgba(245, 230, 200, 0.3);
+  padding: 13px 32px;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+
+.coach-btn-continue:hover:not(:disabled) {
+  border-color: rgba(245, 230, 200, 0.6);
+  background: rgba(245, 230, 200, 0.04);
+}
+
+.coach-btn-continue:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.coach-btn-skip {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(245, 230, 200, 0.25);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast) ease;
+}
+
+.coach-btn-skip:hover {
+  color: rgba(245, 230, 200, 0.45);
+}
+
+/* ---- Loading state --------------------------------------------- */
+
+.coach-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(245, 230, 200, 0.35);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 15px;
+}
+
+.coach-loading-dots span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.coach-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.coach-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1;   }
+}
+
+/* ---- Summary screen -------------------------------------------- */
+
+.coach-summary {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  opacity: 0;
+  animation: summaryReveal var(--duration-slow) var(--ease-out) forwards;
+}
+
+@keyframes summaryReveal {
+  to { opacity: 1; }
+}
+
+.coach-summary-eyebrow {
+  font-family: var(--font-mechanical);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201, 151, 74, 0.6);
+}
+
+.coach-summary-intent {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.65;
+  color: var(--ink-parchment);
+}
+
+.coach-summary-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(245, 230, 200, 0.12);
+}
+
+.coach-summary-suggestion {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgba(245, 230, 200, 0.55);
+}
+
+.coach-summary-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding-top: var(--space-sm);
+}
+
+.coach-btn-begin {
+  font-family: var(--font-mechanical);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-gold);
+  background: transparent;
+  border: 1px solid rgba(201, 151, 74, 0.5);
+  padding: 14px 40px;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+
+.coach-btn-begin:hover {
+  border-color: var(--ink-gold);
+  background: rgba(201, 151, 74, 0.07);
+}
+
+/* ---- Error state ----------------------------------------------- */
+
+.coach-error {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #c47070;
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-md) 0;
+}
