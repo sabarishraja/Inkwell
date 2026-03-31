@@ -18,14 +18,18 @@ import { supabase }        from '../lib/supabaseClient';
 import { Nav }             from '../components/layout/Nav';
 import { TypingArea }      from '../components/write/TypingArea';
 import { MuteToggle }      from '../components/write/MuteToggle';
+import { NudgeButton }     from '../components/write/NudgeButton';
 import { SealModal }       from '../components/write/SealModal';
 import { SealPicker, getMonogram, waxGradient, WAX_COLORS } from '../components/write/SealPicker';
+import { EnvelopeAnimation } from '../components/write/EnvelopeAnimation';
 import { useTypewriter }   from '../hooks/useTypewriter';
 import { useAudio }        from '../hooks/useAudio';
-import { formatDate }      from '../lib/utils';
-import type { DeliveryType, SealDesign, SealColor } from '../types/letter';
+import { formatDate, htmlToPlain } from '../lib/utils';
+import type { DeliveryType, SealDesign, SealColor, EnvelopeColor } from '../types/letter';
 import '../styles/write.css';
 import '../styles/compose.css';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 
 type SealPhase = 'idle' | 'picking' | 'drop' | 'fold' | 'fly';
 
@@ -50,8 +54,9 @@ export function ComposePage() {
   const [summaryDismissed, setSummaryDismissed] = useState(false);
 
   // Seal customisation — defaults match SealPicker defaults
-  const [sealDesign, setSealDesign] = useState<SealDesign>('heart');
-  const [sealColor,  setSealColor]  = useState<SealColor>('classic-red');
+  const [sealDesign,     setSealDesign]     = useState<SealDesign>('heart');
+  const [sealColor,      setSealColor]      = useState<SealColor>('classic-red');
+  const [envelopeColor,  setEnvelopeColor]  = useState<EnvelopeColor>('parchment');
 
   // Monogram derived from the authenticated user's display name
   const [monogram, setMonogram] = useState('?');
@@ -59,6 +64,9 @@ export function ComposePage() {
   const titleRef    = useRef<HTMLInputElement>(null);
   const bodyEnabled = useRef(false);
   const sealTimers  = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  // Stores the navigation state while the 3-D envelope animation plays
+  const pendingNavRef = useRef<{ replace: boolean; state: Record<string, unknown> } | null>(null);
 
   const tw = useTypewriter({
     audio,
@@ -127,9 +135,10 @@ export function ComposePage() {
   }, []);
 
   // Picker confirmed — store choices and start the animation
-  const handlePickerConfirm = useCallback((design: SealDesign, color: SealColor) => {
+  const handlePickerConfirm = useCallback((design: SealDesign, color: SealColor, envColor: EnvelopeColor) => {
     setSealDesign(design);
     setSealColor(color);
+    setEnvelopeColor(envColor);
     beginSealAnimation();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -149,6 +158,8 @@ export function ComposePage() {
   }, [tw, audio]);
 
   // Cancel from the modal — reverse the seal animation
+  const getLetterText = useCallback(() => htmlToPlain(tw.getContent()), [tw]);
+
   const handleModalCancel = useCallback(() => {
     setShowModal(false);
     setSealPhase('idle');
@@ -157,7 +168,8 @@ export function ComposePage() {
     sealTimers.current = [];
   }, [tw]);
 
-  // Submit from the modal — fly the paper away, then hand off to /reflection
+  // Submit from the modal — stash nav state and kick off the 3-D envelope animation.
+  // Navigation fires via handleEnvelopeComplete once the animation finishes.
   const handleModalSend = useCallback(({
     deliveryType,
     specificDate,
@@ -167,28 +179,32 @@ export function ComposePage() {
     specificDate?: string;
     email: string;
   }) => {
+    pendingNavRef.current = {
+      replace: true,
+      state: {
+        title:         title.trim(),
+        body:          tw.getContent(),
+        deliveryType,
+        specificDate,
+        email,
+        sealDesign,
+        sealColor,
+        envelopeColor,
+        sessionId:     coachState.sessionId     ?? null,
+        intentSummary: coachState.intentSummary ?? null,
+      },
+    };
     setShowModal(false);
     setSealPhase('fly');
+  }, [title, tw, coachState, sealDesign, sealColor, envelopeColor]);
 
-    const t2 = setTimeout(() => {
-      navigate('/reflection', {
-        replace: true,
-        state: {
-          title:         title.trim(),
-          body:          tw.getContent(),
-          deliveryType,
-          specificDate,
-          email,
-          sealDesign,
-          sealColor,
-          sessionId:     coachState.sessionId     ?? null,
-          intentSummary: coachState.intentSummary ?? null,
-        },
-      });
-    }, 900);
-
-    sealTimers.current.push(t2);
-  }, [title, tw, navigate, coachState, sealDesign, sealColor]);
+  // Called by EnvelopeAnimation once the envelope has flown off-screen
+  const handleEnvelopeComplete = useCallback(() => {
+    if (pendingNavRef.current) {
+      navigate('/reflection', pendingNavRef.current);
+      pendingNavRef.current = null;
+    }
+  }, [navigate]);
 
   // ---- Derived state ----
 
@@ -338,6 +354,15 @@ export function ComposePage() {
 
       </main>
 
+      {/* ---- AI nudge button (outside main so it positions fixed correctly) ---- */}
+      {!isSealing && (
+        <NudgeButton
+          getLetterText={getLetterText}
+          recipientName=""
+          supabaseUrl={SUPABASE_URL}
+        />
+      )}
+
       {/* ---- Seal Picker (shown before animation, lets user choose design + color) ---- */}
       <SealPicker
         visible={sealPhase === 'picking'}
@@ -355,6 +380,17 @@ export function ComposePage() {
       />
 
       <MuteToggle audio={audio} />
+
+      {/* ---- 3-D envelope animation (fly phase) ---- */}
+      {sealPhase === 'fly' && (
+        <EnvelopeAnimation
+          sealColor={sealColor}
+          sealDesign={sealDesign}
+          monogram={monogram}
+          envelopeColor={envelopeColor}
+          onComplete={handleEnvelopeComplete}
+        />
+      )}
     </div>
   );
 }

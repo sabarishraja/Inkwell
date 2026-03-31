@@ -1,8 +1,9 @@
 /**
  * LandingPage.tsx — Inkwell marketing/onboarding page.
  *
- * Direct JSX translation of index.html.
- * Scroll-reveal via useScrollReveal hook.
+ * Sections:
+ *   Hero → How It Works (4 steps) → AI Coach feature → Wax Seal feature
+ *   → Letter Showcase → Time Capsule → Footer
  */
 
 import { useEffect } from 'react';
@@ -15,7 +16,6 @@ import { LetterShowcase }  from '../components/LetterShowcase';
 export function LandingPage() {
   useScrollReveal();
 
-  // Set page title
   useEffect(() => { document.title = 'Inkwell — Write Letters That Wait'; }, []);
 
   return (
@@ -38,7 +38,7 @@ export function LandingPage() {
           </p>
 
           <Link
-            to="/write"
+            to="/coach"
             className="btn-cta"
             data-animate
             data-delay="3"
@@ -58,7 +58,6 @@ export function LandingPage() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="scroll-indicator" aria-hidden="true">
           <div className="scroll-indicator__line" />
         </div>
@@ -69,36 +68,140 @@ export function LandingPage() {
         <div className="section-header">
           <p className="section-label" data-animate>The ritual</p>
           <h2 id="hiw-title" className="section-title" data-animate data-delay="1">
-            Three steps. One letter. A lifetime of meaning.
+            Four steps. One letter. A lifetime of meaning.
           </h2>
         </div>
 
-        <div className="steps-grid">
+        <div className="steps-grid steps-grid--4">
           <article className="step-card" data-animate>
             <div className="step-number" aria-hidden="true">01</div>
-            <h3 className="step-title">Write</h3>
+            <h3 className="step-title">Prepare</h3>
             <p className="step-desc">
-              Load your paper. Type with purpose. Hear the keys. Feel the ritual.
+              Meet your AI writing coach. Answer three questions and arrive at
+              the page knowing exactly what you want to say.
             </p>
           </article>
 
           <article className="step-card" data-animate data-delay="1">
             <div className="step-number" aria-hidden="true">02</div>
-            <h3 className="step-title">Seal</h3>
+            <h3 className="step-title">Write</h3>
             <p className="step-desc">
-              When you&rsquo;re done, seal the letter with a stamp. It&rsquo;s locked.
-              No going back.
+              Load your paper. Type with purpose. Hear the keys. If you get
+              stuck, ask for a nudge.
             </p>
           </article>
 
           <article className="step-card" data-animate data-delay="2">
             <div className="step-number" aria-hidden="true">03</div>
+            <h3 className="step-title">Seal</h3>
+            <p className="step-desc">
+              Choose your wax seal design and color. Press the stamp.
+              It&rsquo;s locked. No going back.
+            </p>
+          </article>
+
+          <article className="step-card" data-animate data-delay="3">
+            <div className="step-number" aria-hidden="true">04</div>
             <h3 className="step-title">Deliver</h3>
             <p className="step-desc">
               Choose when it arrives. Tomorrow. Their birthday. A surprise.
               The waiting is part of the gift.
             </p>
           </article>
+        </div>
+      </section>
+
+      {/* ---- AI Writing Coach Feature ------------------------ */}
+      <section className="feature-coach" aria-labelledby="coach-title">
+        <div className="feature-coach__inner">
+          <div className="feature-coach__copy">
+            <p className="section-label" data-animate>AI Writing Coach</p>
+            <h2 id="coach-title" className="feature-coach__headline" data-animate data-delay="1">
+              A ritual before the first word.
+            </h2>
+            <p className="feature-coach__body" data-animate data-delay="2">
+              Before you write, Inkwell asks you three questions — who are you
+              writing to, what do you want them to feel, what has been left
+              unsaid. Your answers shape a personal writing intention that stays
+              with you at the page.
+            </p>
+            <p className="feature-coach__body" data-animate data-delay="3">
+              And if the words stop mid-letter, one tap surfaces a quiet,
+              considered question — not a prompt, a provocation — to pull
+              something true out of you.
+            </p>
+            <Link
+              to="/coach"
+              className="btn-cta btn-cta--ghost"
+              data-animate
+              data-delay="4"
+              aria-label="Try the writing coach"
+            >
+              Try the Coach
+            </Link>
+          </div>
+
+          {/* Coach visual — three question dots */}
+          <div className="coach-visual" data-animate aria-hidden="true">
+            <div className="coach-visual__card">
+              <div className="coach-visual__step-dots">
+                <span className="coach-visual__dot coach-visual__dot--done" />
+                <span className="coach-visual__dot coach-visual__dot--done" />
+                <span className="coach-visual__dot coach-visual__dot--active" />
+              </div>
+              <p className="coach-visual__question">
+                What has been left unsaid between you two?
+              </p>
+              <div className="coach-visual__cursor" aria-hidden="true" />
+            </div>
+            <div className="coach-visual__nudge-pill">
+              <span className="coach-visual__nudge-dot" />
+              STUCK?
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Wax Seal Customization Feature ------------------ */}
+      <section className="feature-seal" aria-labelledby="seal-title">
+        <div className="feature-seal__inner">
+          {/* Seal palette visual */}
+          <div className="seal-visual" data-animate aria-hidden="true">
+            <div className="seal-visual__grid">
+              {/* Row of seal color swatches */}
+              <div className="seal-visual__swatches">
+                <span className="seal-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, #C0392B, #6B0E0E)' }} />
+                <span className="seal-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, #7B2D42, #3D0F1E)' }} />
+                <span className="seal-swatch seal-swatch--active" style={{ background: 'radial-gradient(circle at 35% 35%, #D4A843, #8A6210)' }} />
+                <span className="seal-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, #2D6A4F, #0F3020)' }} />
+                <span className="seal-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, #1A3A6B, #070E2A)' }} />
+              </div>
+              {/* Large seal preview */}
+              <div className="seal-visual__preview">
+                <div className="seal-visual__wax">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 4 C16 4, 20 10, 28 12 C26 20, 22 24, 16 28 C10 24, 6 20, 4 12 C12 10, 16 4, 16 4Z" fill="rgba(245,200,160,0.5)" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="feature-seal__copy">
+            <p className="section-label" data-animate>Wax Seal Customization</p>
+            <h2 id="seal-title" className="feature-seal__headline" data-animate data-delay="1">
+              Every seal tells a story.
+            </h2>
+            <p className="feature-seal__body" data-animate data-delay="2">
+              Choose from five hand-crafted wax seal designs — a heart, a flower,
+              an infinity heart, a floral crest, or your own monogram — and five
+              rich wax colors from classic crimson to forest green to midnight navy.
+            </p>
+            <p className="feature-seal__body" data-animate data-delay="3">
+              Your seal is pressed onto every letter you send. A small, permanent
+              mark of who you are — and that you meant it.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -122,7 +225,6 @@ export function LandingPage() {
             </p>
           </div>
 
-          {/* CSS envelope illustration */}
           <div className="envelope-wrap" data-animate aria-hidden="true">
             <div className="envelope-date-tag">Arriving — whenever you decide</div>
             <div className="envelope">

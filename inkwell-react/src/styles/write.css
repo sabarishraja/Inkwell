@@ -666,7 +666,7 @@
   padding: 16px 18px;
   transform: rotate(-2deg);
   box-shadow: 3px 6px 20px rgba(0, 0, 0, 0.5), -1px -1px 0 rgba(200, 160, 80, 0.2);
-  z-index: 150;
+  z-index: 500;
   animation: noteSlideIn var(--duration-mid) var(--ease-out) forwards;
 }
 
@@ -1175,6 +1175,44 @@
 }
 
 .seal-color-btn.color--selected {
+  border-color: rgba(201, 151, 74, 0.9);
+  box-shadow: 0 0 0 2px rgba(201, 151, 74, 0.25),
+              0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Envelope color row */
+.seal-picker__envelopes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.seal-picker__row-label {
+  font-family: var(--font-mechanical);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(201, 151, 74, 0.5);
+  margin-right: 4px;
+}
+
+.env-color-btn {
+  width: 28px;
+  height: 20px;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: transform var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.env-color-btn:hover {
+  transform: scale(1.15);
+}
+
+.env-color-btn.env--selected {
   border-color: rgba(201, 151, 74, 0.9);
   box-shadow: 0 0 0 2px rgba(201, 151, 74, 0.25),
               0 2px 8px rgba(0, 0, 0, 0.5);

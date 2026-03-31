@@ -36,6 +36,13 @@ export function NudgeButton({ getLetterText, recipientName, supabaseUrl }: Props
   const [noteVisible, setNoteVisible] = useState(false);
   const [autoTimer,   setAutoTimer]   = useState<ReturnType<typeof setTimeout> | null>(null);
 
+  // Reset to idle on mount so state is clean after navigation
+  useEffect(() => {
+    setState('idle');
+    setNudgeText(null);
+    setNoteVisible(false);
+  }, []);
+
   const handleClick = async () => {
     if (state !== 'idle') return;
     setState('loading');
@@ -66,12 +73,14 @@ export function NudgeButton({ getLetterText, recipientName, supabaseUrl }: Props
       question = FALLBACK_PROMPTS[Math.floor(Math.random() * FALLBACK_PROMPTS.length)];
     }
 
-    setState('done');
     setNudgeText(question);
     setNoteVisible(true);
+    setState('idle'); // reset immediately so button is usable while note is showing
 
     // Auto-dismiss after 30 seconds
-    const t = setTimeout(() => setNoteVisible(false), 30_000);
+    const t = setTimeout(() => {
+      setNoteVisible(false);
+    }, 30_000);
     setAutoTimer(t);
   };
 
