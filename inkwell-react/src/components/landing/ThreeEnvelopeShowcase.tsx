@@ -11,24 +11,24 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FEATURES = [
   {
-    eyebrow: "01 — The Envelope",
-    headline: "Prepare for sealing.",
-    body: "Your digital desk is cleared. With the words written, the initial flaps fold inward. There is no endless editing anymore—only the path forward.",
+    eyebrow: "The Sealing Ritual",
+    headline: "Choose your parchment.",
+    body: "Customize the physical delivery. Select from 3 premium envelope colors: Classic Parchment, Forest Green, or Midnight Blue to set the atmosphere.",
   },
   {
-    eyebrow: "02 — The Gather",
-    headline: "Wrapping your thoughts.",
-    body: "The bottom flap sweeps up, concealing the lower half of your letter. Your unedited honesty is secured.",
+    eyebrow: "The Sealing Ritual",
+    headline: "Secure the contents.",
+    body: "Your unedited honesty is folded away. The physical action of sealing ensures your words are locked safely from second-guessing.",
   },
   {
-    eyebrow: "03 — The Closing",
-    headline: "Protected and hidden.",
-    body: "The top flap swings shut. The letter is officially locked out of sight, safe from second-guessing.",
+    eyebrow: "The Sealing Ritual",
+    headline: "The Wax Seal.",
+    body: "Select your signature. Choose between 5 bespoke wax seal designs: a Flower, Infinity Heart, Floral Sprig, classic Heart, or your personal Monogram.",
   },
   {
-    eyebrow: "04 — The Seal",
-    headline: "Sealed in wax.",
-    body: "The final seal is cast. Time starts ticking until delivery. By removing the pressure of an immediate reply, you give them the luxury of reading it when the time is right.",
+    eyebrow: "The Sealing Ritual",
+    headline: "Stamped in wax.",
+    body: "Melt and cast. Choose from 5 wax colors: Classic Red, Deep Burgundy, Gold, Forest Green, or Navy. Hear the paper tear when it's finally sealed.",
   },
 ];
 
