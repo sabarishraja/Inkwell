@@ -1,0 +1,282 @@
+/* ================================================================
+   feature-showcase.css — Scroll-driven feature showcase
+   ================================================================ */
+
+.fs-root {
+  position: relative;
+  height: 500vh; /* 4 beats + 1 initial space */
+  background-color: transparent; /* Placed over dark background */
+}
+
+.fs-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.fs-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* ---- Left Half (Letter Vis) -------------------------------- */
+.fs-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  perspective: 1600px;
+}
+
+.fs-envelope-wrapper {
+  position: relative;
+  width: 320px;
+  height: 240px;
+  transform-style: preserve-3d;
+  /* Rotate slightly so we can see the 3D effect */
+  transform: rotateZ(-4deg) rotateX(15deg) rotateY(-10deg);
+}
+
+.fs-envelope-base {
+  position: absolute;
+  inset: 0;
+  background-color: var(--ink-parchment);
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Inner content of the letter to look written */
+.fs-envelope-inner {
+  position: absolute;
+  inset: 12px;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 19px,
+    rgba(44, 26, 14, 0.08) 20px
+  );
+  opacity: 0.6;
+}
+
+/* Common properties for all flaps */
+.fs-flap {
+  position: absolute;
+  background-color: var(--ink-parchment);
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  backface-visibility: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transform-style: preserve-3d;
+}
+
+/* Left Flap */
+.fs-flap-left {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 170px;
+  transform-origin: left center;
+  /* Fold open initially */
+  transform: rotateY(-179deg);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background-position: left center;
+}
+.fs-flap-left-back {
+  position: absolute;
+  inset: 0;
+  background-color: #e5d3b3; /* Slightly darker back side */
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* Right Flap */
+.fs-flap-right {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 170px;
+  transform-origin: right center;
+  transform: rotateY(179deg);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  background-position: right center;
+}
+.fs-flap-right-back {
+  position: absolute;
+  inset: 0;
+  background-color: #e5d3b3;
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Bottom Flap */
+.fs-flap-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  transform-origin: bottom center;
+  transform: rotateX(179deg);
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+  background-position: bottom center;
+}
+.fs-flap-bottom-back {
+  position: absolute;
+  inset: 0;
+  background-color: #dac7a5;
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  transform: rotateX(-180deg);
+  backface-visibility: hidden;
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+}
+
+/* Top Flap */
+.fs-flap-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  transform-origin: top center;
+  transform: rotateX(-179deg);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background-position: top center;
+}
+.fs-flap-top-back {
+  position: absolute;
+  inset: 0;
+  background-color: #eaddc0;
+  background-image: url('/paper.jpg');
+  background-size: cover;
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* Wax Seal (appears at the end) */
+.fs-wax-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  margin-top: -24px;
+  margin-left: -24px;
+  background-color: #721c1c;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 2px 4px rgba(255,100,100,0.4),
+    inset 0 -2px 6px rgba(0,0,0,0.6),
+    0 4px 10px rgba(0,0,0,0.5);
+  transform: scale(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.fs-wax-seal::after {
+  content: '';
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+/* Optional stamp icon */
+.fs-wax-seal svg {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  fill: #852a2a;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+}
+
+/* ---- Right Half (Copy) ------------------------------------ */
+.fs-right {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  padding-right: 40px;
+}
+
+.fs-beat-content {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  max-width: 420px;
+  transform: translateY(-40%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fs-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: var(--ink-gold);
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+}
+
+.fs-body {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  color: var(--ink-parchment);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* Subtle glow at the center dividing line */
+.fs-divider {
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  bottom: 15%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(201, 151, 74, 0.2),
+    transparent
+  );
+}
+
+@media (max-width: 768px) {
+  .fs-container {
+    flex-direction: column;
+    padding: 0 24px;
+  }
+  .fs-left, .fs-right {
+    flex: none;
+    height: 50%;
+    width: 100%;
+  }
+  .fs-envelope-wrapper {
+    transform: scale(0.8) rotateZ(0deg) rotateX(10deg);
+  }
+  .fs-divider {
+    display: none;
+  }
+  .fs-beat-content {
+    left: 10%;
+    width: 80%;
+    transform: translateY(-20%);
+  }
+}

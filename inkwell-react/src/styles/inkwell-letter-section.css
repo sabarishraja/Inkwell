@@ -1,0 +1,208 @@
+/* ============================================================
+   INKWELL LETTER SECTION — CSS
+   Sticky pinning container + floating letter styles.
+   Companion to: InkwellLetterSection.tsx
+
+   Background deliberately matches the homepage dark bg (#0D0B09)
+   so this section flows seamlessly into the landing page.
+============================================================ */
+
+/* ── Scroll root — creates the scrollable distance ──────────────── */
+
+.ils-scroll-root {
+  position:   relative;
+  height:     350vh;        /* ~3.5× viewport of scroll distance   */
+  overflow:   clip;         /* prevent horizontal bleed             */
+}
+
+/* ── Sticky viewport — pinned for all 350vh ──────────────────────── */
+
+.ils-sticky {
+  position:        sticky;
+  top:             0;
+  height:          100vh;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  overflow:        hidden;
+  /* 3-D perspective so rotateX/Y look truly volumetric */
+  perspective:        900px;
+  perspective-origin: 50% 50%;
+  /* Match homepage background — no parchment/cream override */
+  background:      #0D0B09;
+}
+
+/* Subtle radial glow behind the inkwell */
+.ils-bg-glow {
+  position:       absolute;
+  inset:          0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 42% at 50% 52%,
+      rgba(201, 151, 74, 0.06) 0%,
+      transparent 80%),
+    radial-gradient(ellipse 90% 80% at 50% 100%,
+      #0A0604 0%,
+      transparent 60%);
+  z-index: 0;
+  animation: ilsBgPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes ilsBgPulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1;   }
+}
+
+/* ── Inkwell wrapper ─────────────────────────────────────────────── */
+
+.ils-inkwell-wrapper {
+  position:        relative;
+  z-index:         10;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  gap:             8px;
+  transform-style: preserve-3d;
+  filter:          drop-shadow(0 0 32px rgba(201, 151, 74, 0.20));
+}
+
+/* Radial glow disc behind the SVG */
+.ils-inkwell-glow {
+  position:     absolute;
+  top:          50%;
+  left:         50%;
+  transform:    translate(-50%, -50%);
+  width:        220px;
+  height:       220px;
+  border-radius: 50%;
+  background:   radial-gradient(
+    circle,
+    rgba(201, 151, 74, 0.16) 0%,
+    rgba(201, 151, 74, 0)    70%
+  );
+  pointer-events: none;
+  z-index:      -1;
+  animation:    ilsGlowPulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes ilsGlowPulse {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  to   { transform: translate(-50%, -50%) scale(1.2); opacity: 1;   }
+}
+
+/* SVG itself */
+.ils-inkwell-svg {
+  width:      140px;
+  height:     auto;
+  overflow:   visible;
+  transition: filter 0.4s ease;
+}
+
+/* Animated drip */
+.ils-inkdrop {
+  animation:        ilsDripFall 2.8s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+@keyframes ilsDripFall {
+  0%   { opacity: 0;   transform: translateY(0)   scaleY(1);    }
+  30%  { opacity: 0.9; transform: translateY(0)   scaleY(1);    }
+  60%  { opacity: 0.6; transform: translateY(7px)  scaleY(1.4); }
+  80%  { opacity: 0;   transform: translateY(14px) scaleY(0.5); }
+  100% { opacity: 0;   transform: translateY(0)   scaleY(1);    }
+}
+
+/* Label beneath the inkwell — Special Elite font, matches homepage UI labels */
+.ils-inkwell-label {
+  font-family:    var(--font-mechanical, 'Special Elite', cursive);
+  font-size:      10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color:          rgba(201, 151, 74, 0.4);
+  margin:         0;
+  user-select:    none;
+}
+
+/* ── Flying letters ──────────────────────────────────────────────── */
+
+.ils-letter {
+  position:         absolute;
+  /* Start centred on the inkwell — GSAP drives all motion */
+  top:              50%;
+  left:             50%;
+  transform:        translate(-50%, -50%);
+
+  /* Special Elite: loose typewritten characters floating in dark space */
+  font-family:      var(--font-mechanical, 'Special Elite', cursive);
+  line-height:      1;
+  user-select:      none;
+  pointer-events:   none;
+
+  /* True 3-D rendering for convincing flap effect */
+  transform-style:  preserve-3d;
+  backface-visibility: hidden;
+
+  /* invisible at rest — GSAP animates opacity in */
+  opacity:          0;
+
+  /* Warm glow text shadow — no card/box backgrounds */
+  text-shadow:
+    0 0 12px currentColor,
+    0 0 28px rgba(201, 151, 74, 0.28);
+
+  z-index:    20;
+  will-change: transform, opacity;
+}
+
+/* ── Scroll hint — "scroll to write" ────────────────────────────── */
+
+.ils-scroll-hint {
+  position:  absolute;
+  bottom:    42px;
+  left:      50%;
+  transform: translateX(-50%);
+  display:   flex;
+  align-items: center;
+  gap:       12px;
+  z-index:   30;
+  animation: ilsHintFade 3s ease-in-out infinite alternate;
+}
+
+@keyframes ilsHintFade {
+  from { opacity: 0.35; }
+  to   { opacity: 0.8;  }
+}
+
+/* Matches the homepage's UI label typographic style */
+.ils-scroll-hint__text {
+  font-family:    var(--font-ui, 'DM Sans', sans-serif);
+  font-size:      10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color:          rgba(201, 151, 74, 0.55);
+  white-space:    nowrap;
+}
+
+.ils-scroll-hint__line {
+  display:    block;
+  width:      28px;
+  height:     1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(201, 151, 74, 0.38),
+    transparent
+  );
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .ils-inkwell-svg {
+    width: 100px;
+  }
+
+  .ils-letter {
+    font-size: clamp(14px, 4.5vw, 36px) !important;
+  }
+}

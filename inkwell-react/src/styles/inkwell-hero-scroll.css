@@ -1,0 +1,204 @@
+/* ============================================================
+   INKWELL HERO SCROLL — CSS
+   Sticky pinning container + floating letter styles.
+   Companion to: InkwellHeroScroll.tsx
+============================================================ */
+
+/* ── Scroll root — provides the scrollable distance ─────────── */
+
+.ihs-scroll-root {
+  position:   relative;
+  height:     400vh;           /* 4 × viewport heights of scroll distance */
+  overflow:   clip;            /* prevent horizontal bleed from flying letters */
+}
+
+/* ── Sticky viewport — stays pinned for all 400 vh ──────────── */
+
+.ihs-sticky {
+  position:        sticky;
+  top:             0;
+  height:          100vh;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  overflow:        hidden;
+  /* 3-D perspective so rotateX/Y look truly volumetric */
+  perspective:     900px;
+  perspective-origin: 50% 50%;
+  background:      #0D0B09;
+}
+
+/* Subtle radial glow that pulses behind the inkwell */
+.ihs-bg-glow {
+  position:         absolute;
+  inset:            0;
+  pointer-events:   none;
+  background:
+    radial-gradient(ellipse 55% 42% at 50% 52%,
+      rgba(201, 151, 74, 0.07) 0%,
+      transparent 80%),
+    radial-gradient(ellipse 90% 80% at 50% 100%,
+      #0A0604 0%,
+      transparent 60%);
+  z-index: 0;
+  animation: ihsBgPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes ihsBgPulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1;   }
+}
+
+/* ── Inkwell wrapper ─────────────────────────────────────────── */
+
+.ihs-inkwell-wrapper {
+  position:         relative;
+  z-index:          10;
+  display:          flex;
+  flex-direction:   column;
+  align-items:      center;
+  gap:              8px;
+  transform-style:  preserve-3d;  /* for any 3-D children */
+  filter:           drop-shadow(0 0 32px rgba(201, 151, 74, 0.22));
+}
+
+/* Radial glow disc behind the inkwell SVG */
+.ihs-inkwell-glow {
+  position:         absolute;
+  top:              50%;
+  left:             50%;
+  transform:        translate(-50%, -50%);
+  width:            220px;
+  height:           220px;
+  border-radius:    50%;
+  background:       radial-gradient(
+    circle,
+    rgba(201, 151, 74, 0.18) 0%,
+    rgba(201, 151, 74, 0)    70%
+  );
+  pointer-events:   none;
+  z-index:          -1;
+  animation:        ihsGlowPulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes ihsGlowPulse {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  to   { transform: translate(-50%, -50%) scale(1.2); opacity: 1;   }
+}
+
+/* The SVG itself */
+.ihs-inkwell-svg {
+  width:       140px;
+  height:      auto;
+  overflow:    visible;
+  transition:  filter 0.4s ease;
+}
+
+/* Animated drip */
+.ihs-inkdrop {
+  animation: ihsDripFall 2.8s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+@keyframes ihsDripFall {
+  0%   { opacity: 0;   transform: translateY(0)  scaleY(1);    }
+  30%  { opacity: 0.9; transform: translateY(0)  scaleY(1);    }
+  60%  { opacity: 0.6; transform: translateY(7px) scaleY(1.4); }
+  80%  { opacity: 0;   transform: translateY(14px) scaleY(0.5);}
+  100% { opacity: 0;   transform: translateY(0)  scaleY(1);    }
+}
+
+/* Label beneath the inkwell */
+.ihs-inkwell-label {
+  font-family:    var(--font-mechanical, 'Special Elite', cursive);
+  font-size:      10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color:          rgba(201, 151, 74, 0.45);
+  margin:         0;
+  user-select:    none;
+}
+
+/* ── Flying letters ──────────────────────────────────────────── */
+
+.ihs-letter {
+  position:         absolute;
+  /* Start at inkwell centre — GSAP will move them outward */
+  top:              50%;
+  left:             50%;
+  transform:        translate(-50%, -50%);
+
+  font-family:      var(--font-mechanical, 'Special Elite', cursive);
+  line-height:      1;
+  user-select:      none;
+  pointer-events:   none;
+
+  /* 3-D rendering */
+  transform-style:  preserve-3d;
+  backface-visibility: hidden;
+
+  /* Initial state: invisible (GSAP animates opacity in) */
+  opacity:          0;
+
+  /* Text shadow for glow depth */
+  text-shadow:
+    0 0 12px currentColor,
+    0 0 28px rgba(201, 151, 74, 0.3);
+
+  /* Prevent layout interference */
+  z-index:          20;
+  will-change:      transform, opacity;
+}
+
+/* ── Scroll-release hint (bottom of sticky panel) ───────────── */
+
+.ihs-scroll-hint {
+  position:        absolute;
+  bottom:          42px;
+  left:            50%;
+  transform:       translateX(-50%);
+  display:         flex;
+  align-items:     center;
+  gap:             12px;
+  z-index:         30;
+  animation:       ihsHintFade 3s ease-in-out infinite alternate;
+}
+
+@keyframes ihsHintFade {
+  from { opacity: 0.4; }
+  to   { opacity: 0.85; }
+}
+
+.ihs-scroll-hint__text {
+  font-family:    var(--font-ui, 'DM Sans', sans-serif);
+  font-size:      10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color:          rgba(201, 151, 74, 0.55);
+  white-space:    nowrap;
+}
+
+.ihs-scroll-hint__line {
+  display:    block;
+  width:      28px;
+  height:     1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(201, 151, 74, 0.4),
+    transparent
+  );
+}
+
+/* ── Responsive tweaks ───────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .ihs-inkwell-svg {
+    width: 100px;
+  }
+
+  .ihs-letter {
+    /* Slightly smaller font on mobile to prevent clipping */
+    font-size: clamp(14px, 4.5vw, 36px) !important;
+  }
+}

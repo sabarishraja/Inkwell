@@ -21,7 +21,7 @@ import { LetterViewPage }  from './pages/LetterViewPage';
 import { RecipientPage }   from './pages/RecipientPage';
 import { ComposePage }     from './pages/ComposePage';
 import { CoachPage }       from './pages/CoachPage';
-import { ReflectionPage }  from './pages/ReflectionPage';
+import { ReflectionPage }      from './pages/ReflectionPage';
 import { useSupabaseAuth } from './hooks/useSupabaseAuth';
 import './styles/global.css';
 
@@ -58,9 +58,9 @@ export function App() {
 
       <Routes>
         {/* Public routes */}
-        <Route path="/"     element={<LandingPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/r/:id" element={<RecipientPage />} />
+        <Route path="/"             element={<LandingPage />} />
+        <Route path="/auth"         element={<AuthPage />} />
+        <Route path="/r/:id"        element={<RecipientPage />} />
 
         {/* Protected routes */}
         <Route
